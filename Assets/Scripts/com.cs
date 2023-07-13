@@ -21,20 +21,56 @@ public class com : MonoBehaviour
     public int my_at=20;
     public GameObject bubble_obj;
 
-        public GameObject dmg_txt_pre;
-          public GameObject bumo_obj;
-        public Transform dmg_txt_pos;
+    public GameObject dmg_txt_pre;
+    public GameObject bumo_obj;
+    public Transform dmg_txt_pos;
           GameObject dmg_inst;
 
-          public AudioSource audioSource;
+    public AudioSource audioSource;
 
     public AudioClip audioClip;
 
     public Text skill_1_price;
     public Text skill_2_price;
     public Text skill_3_price;
-        public AudioClip audioClip_die;
-    
+    public AudioClip audioClip_die;
+
+    public Transform com_img;
+    public Transform com_hpbar;
+    public Text boss_text;
+
+    public GameObject fan_pf;
+    public GameObject fan_fail;
+    public GameObject fan_ok;
+    public GameObject fan_good;
+    public Transform fan_pos;
+
+    public GameObject shop_pop;
+    public Text skill_1;
+    public Text skill_2;
+    public Text skill_3;
+    private string[] skill_name = { "at", "hp", "def", "big_hp", "slow", "gold", "respon" };
+    public string skill_code_1;
+    public string skill_code_2;
+    public string skill_code_3;
+
+    public AudioSource shop_music;
+    public AudioSource zun_music;
+
+    public Image skill_img_1;
+    public Image skill_img_2;
+    public Image skill_img_3;
+
+    public Sprite at;
+    public Sprite respon;
+
+    public Sprite all_hp;
+    public Sprite big_hp;
+    public Sprite gold;
+    public Sprite slow;
+
+    public Sprite def;
+
     private void Awake()
     {
       
@@ -42,228 +78,234 @@ public class com : MonoBehaviour
     }
 
 
-    public void txtload(){
-            G_text.text = G.ToString();
+    public void txtload()
+    {
+        G_text.text = G.ToString();
     }
     void Start()
     {
         G_text.text = G.ToString();
         com_hp.value = (float)curhp / (float)maxhp; // 현재 체력을 슬라이더에 반영
 
-boss_text.text="";
+        boss_text.text="";
 
         currentscore = 0; // 현재 점수 초기화
         UpdateScoreText(); // 점수 텍스트 업데이트
 
     }
-public Transform com_img;
-public Transform com_hpbar;
-public Text boss_text;
 
-public void stage_fan(){
-    maxhp=100;
-    for(int i = 0;i<currentscore;i++){
-        maxhp+=4;
-    }
+    public void stage_fan()
+    {
+        maxhp=100;
+        
+        for(int i = 0;i<currentscore;i++)
+        {
+            maxhp+=4;
+        }
 
- for(int i = 0;i<currentscore;i+=10){
-        maxhp+=50;
-    }
-    my_at=20;
-   for(int i = 0;i<GameObject.Find("Canvas").GetComponent<GameManager>().at_lv;i++){
-        my_at+=i;
-    }  
-
-    GameObject.Find("User").GetComponent<user>().maxhp=100;
-   for(int i = 0;i<GameObject.Find("Canvas").GetComponent<GameManager>().hp_lv;i++){
-        GameObject.Find("User").GetComponent<user>().maxhp+=(i*10);
-    }  
-
-       if(currentscore%10 == 0){
-com_img.localScale=new Vector3(12f, 12f, 0.0f);
-
-com_hpbar.localScale=new Vector3(1.3f, 1.3f, 0.0f);
-boss_text.text="BOSS";
-
-    }else if(currentscore==0){
-com_img.localScale=new Vector3(8f, 8f, 0.0f);
-
-com_hpbar.localScale=new Vector3(1f, 1f, 0.0f);
-boss_text.text="";
-    }else{
-        com_img.localScale=new Vector3(8f, 8f, 0.0f);
-
-com_hpbar.localScale=new Vector3(1f, 1f, 0.0f);
-boss_text.text="";
-    }
-
-ResetHealth();
+        for(int i = 0;i<currentscore;i+=10)
+        {
+            maxhp+=50;
+        }
     
-}
-public GameObject fan_pf;
-public GameObject fan_fail;
-public GameObject fan_ok;
-public GameObject fan_good;
-public Transform fan_pos;
+        my_at=20;
 
-public void fail_txt(){
-    GameObject temp = Instantiate(fan_fail);
+        for(int i = 0;i<GameObject.Find("Canvas").GetComponent<GameManager>().at_lv;i++)
+        {
+            my_at+=i;
+        }  
+
+        GameObject.Find("User").GetComponent<user>().maxhp=100;
+
+        for(int i = 0;i<GameObject.Find("Canvas").GetComponent<GameManager>().hp_lv;i++)
+        {
+            GameObject.Find("User").GetComponent<user>().maxhp+=(i*10);
+        }  
+
+        if(currentscore%10 == 0)
+        {
+            com_img.localScale=new Vector3(12f, 12f, 0.0f);
+            com_hpbar.localScale=new Vector3(1.3f, 1.3f, 0.0f);
+            
+            boss_text.text="BOSS";
+
+        }
+        else if(currentscore==0)
+        {
+            com_img.localScale=new Vector3(8f, 8f, 0.0f);
+            com_hpbar.localScale=new Vector3(1f, 1f, 0.0f);
+
+            boss_text.text="";
+        }
+        else
+        {
+            com_img.localScale=new Vector3(8f, 8f, 0.0f);
+            com_hpbar.localScale=new Vector3(1f, 1f, 0.0f);
+
+            boss_text.text="";
+        }
+
+        ResetHealth();
+    }
+
+    public void fail_txt()
+    {
+        GameObject temp = Instantiate(fan_fail);
         temp.transform.SetParent(fan_pos);
-    Instantiate(fan_fail,fan_pos.position,fan_pos.rotation);
-}
+        Instantiate(fan_fail,fan_pos.position,fan_pos.rotation);
+    }
 
-public void pf_txt(){
-      GameObject temp = Instantiate(fan_pf);
+    public void pf_txt()
+    {
+        GameObject temp = Instantiate(fan_pf);
         temp.transform.SetParent(fan_pos);
-    Instantiate(fan_pf,fan_pos.position,fan_pos.rotation);
-}
+        Instantiate(fan_pf,fan_pos.position,fan_pos.rotation);
+    }
 
-public void ok_txt(){
-      GameObject temp = Instantiate(fan_ok);
+    public void ok_txt()
+    {
+        GameObject temp = Instantiate(fan_ok);
         temp.transform.SetParent(fan_pos);
-    Instantiate(fan_ok,fan_pos.position,fan_pos.rotation);
-}
+        Instantiate(fan_ok,fan_pos.position,fan_pos.rotation);
+    }
 
-
-public void good_txt(){
-      GameObject temp = Instantiate(fan_good);
+    public void good_txt()
+    {
+        GameObject temp = Instantiate(fan_good);
         temp.transform.SetParent(fan_pos);
-    Instantiate(fan_good,fan_pos.position,fan_pos.rotation);
-}
-
-public GameObject shop_pop;
-public Text skill_1;
-public Text skill_2;
-public Text skill_3;
- private string[] skill_name = { "at", "hp", "def", "big_hp", "slow", "gold", "respon"};
-public string skill_code_1;
-public string skill_code_2;
-public string skill_code_3;
-
-public AudioSource shop_music;
-public AudioSource zun_music;
+        Instantiate(fan_good,fan_pos.position,fan_pos.rotation);
+    }
 
 
+    public void shop_exit()
+    {
+        shop_music.Stop();
+        zun_music.Play();
+        GameObject.Find("Canvas").GetComponent<GameManager>().key_move_bool = true;
+    }
 
-public Image skill_img_1;
-public Image skill_img_2;
-public Image skill_img_3;
-
-public Sprite at;
-public Sprite respon;
-
-public Sprite all_hp;
-public Sprite big_hp;
-public Sprite gold;
-public Sprite slow;
-
-public Sprite def;
-
-
-public void shop_exit(){
-     shop_music.Stop();
-     zun_music.Play();
-       GameObject.Find("Canvas").GetComponent<GameManager>().key_move_bool = true;
-}
-
-public void shop_visit(){
-      GameObject.Find("Canvas").GetComponent<GameManager>().key_move_bool = false;
-     shop_music.Play();
-     zun_music.Stop();
-shop_pop.SetActive(true);
-     skill_code_1=skill_name[Random.Range(0,7)];
-       skill_code_2=skill_name[Random.Range(0,7)];
-         skill_code_3=skill_name[Random.Range(0,7)];
-         if(skill_code_1==skill_code_2||skill_code_2==skill_code_3||skill_code_1==skill_code_3){
+    public void shop_visit()
+    {
+        GameObject.Find("Canvas").GetComponent<GameManager>().key_move_bool = false;
+        shop_music.Play();
+        zun_music.Stop();
+        shop_pop.SetActive(true);
+        skill_code_1=skill_name[Random.Range(0,7)];
+        skill_code_2=skill_name[Random.Range(0,7)];
+        skill_code_3=skill_name[Random.Range(0,7)];
+        
+        if(skill_code_1==skill_code_2||skill_code_2==skill_code_3||skill_code_1==skill_code_3)
+        {
             shop_visit();
-         }
+        }
 
         if(skill_code_1=="at")
         {
             skill_1_price.text = 500.ToString();
-   skill_1.text="";
-                 skill_1.text="공격력 증가 lv"+GameObject.Find("Canvas").GetComponent<GameManager>().at_lv+"->lv"+(GameObject.Find("Canvas").GetComponent<GameManager>().at_lv+1).ToString();
-skill_1.text+="";
-skill_img_1.sprite = at;
-        }else if(skill_code_1=="hp"){
+            skill_1.text="";
+            skill_1.text="공격력 증가 lv"+GameObject.Find("Canvas").GetComponent<GameManager>().at_lv+"->lv"+(GameObject.Find("Canvas").GetComponent<GameManager>().at_lv+1).ToString();
+            skill_1.text+="";
+            skill_img_1.sprite = at;
+        }
+        else if(skill_code_1=="hp")
+        {
             skill_1_price.text = 700.ToString();
-               skill_1.text="";
-                 skill_1.text="최대 체력 증가+(전체 회복) lv"+GameObject.Find("Canvas").GetComponent<GameManager>().hp_lv+"->lv"+(GameObject.Find("Canvas").GetComponent<GameManager>().hp_lv+1).ToString();
-skill_1.text+="";
-skill_img_1.sprite = all_hp;
-        }else if(skill_code_1=="def"){
+            skill_1.text="";
+            skill_1.text="최대 체력 증가+(전체 회복) lv"+GameObject.Find("Canvas").GetComponent<GameManager>().hp_lv+"->lv"+(GameObject.Find("Canvas").GetComponent<GameManager>().hp_lv+1).ToString();
+            skill_1.text+="";
+            skill_img_1.sprite = all_hp;
+        }
+        else if(skill_code_1=="def")
+        {
             skill_1_price.text = 1200.ToString();
-              skill_1.text="";
-               skill_1.text="다음판 보호막 1회";
-skill_1.text+="";
-skill_img_1.sprite = def;
-        }else if(skill_code_1=="big_hp"){
+            skill_1.text="";
+            skill_1.text="다음판 보호막 1회";
+            skill_1.text+="";
+            skill_img_1.sprite = def;
+        }
+        else if(skill_code_1=="big_hp")
+        {
             skill_1_price.text =1000.ToString();
-              skill_1.text="";
-               skill_1.text="구급상자";
-skill_1.text+="";
-skill_img_1.sprite =big_hp;
-        }else if(skill_code_1=="slow"){
+            skill_1.text="";
+            skill_1.text="구급상자";
+            skill_1.text+="";
+            skill_img_1.sprite =big_hp;
+        }
+        else if(skill_code_1=="slow")
+        {
             skill_1_price.text = 3000.ToString();
-              skill_1.text="";
-               skill_1.text="다음판 스피드 다운";
-               skill_img_1.sprite = slow;
-skill_1.text+="";
-        }else if(skill_code_1=="gold"){
+            skill_1.text="";
+            skill_1.text="다음판 스피드 다운";
+            skill_img_1.sprite = slow;
+            skill_1.text+="";
+        }
+        else if(skill_code_1=="gold")
+        {
             skill_1_price.text = 2500.ToString();
-              skill_1.text="";
-               skill_1.text="골드 상자 (500골드~10000골드)";
-skill_1.text+="";
-skill_img_1.sprite =gold;
-        }else if(skill_code_1=="respon"){
+            skill_1.text="";
+            skill_1.text="골드 상자 (500골드~10000골드)";
+            skill_1.text+="";
+            skill_img_1.sprite =gold;
+        }
+        else if(skill_code_1=="respon")
+        {
             skill_1_price.text = 4500.ToString();
-              skill_1.text="";
-               skill_1.text="반피로 부활 1회";
-skill_1.text+="";
-skill_img_1.sprite =respon;
+            skill_1.text="";
+            skill_1.text="반피로 부활 1회";
+            skill_1.text+="";
+            skill_img_1.sprite =respon;
         }
 
-
-
-
-
-        if(skill_code_2=="at"){
+        if(skill_code_2=="at")
+        {
             skill_2_price.text =500.ToString();
             skill_2.text="";
             skill_2.text="공격력 증가 lv"+GameObject.Find("Canvas").GetComponent<GameManager>().at_lv+"->lv"+(GameObject.Find("Canvas").GetComponent<GameManager>().at_lv+1).ToString();
             skill_2.text+="";
             skill_img_2.sprite = at;
-        }else if(skill_code_2=="hp"){
+        }
+        else if(skill_code_2=="hp")
+        {
             skill_2_price.text =700.ToString();
             skill_2.text="";
             skill_2.text="최대 체력 증가+(전체 회복) lv"+GameObject.Find("Canvas").GetComponent<GameManager>().hp_lv+"->lv"+(GameObject.Find("Canvas").GetComponent<GameManager>().hp_lv+1).ToString();
             skill_2.text+="";
             skill_img_2.sprite = all_hp;
-        }else if(skill_code_2=="def"){
+        }
+        else if(skill_code_2=="def")
+        {
             skill_2_price.text =1200.ToString();
             skill_2.text="";
             skill_2.text="다음판 보호막 1회";
             skill_2.text+="";
             skill_img_2.sprite = def;
-        }else if(skill_code_2=="big_hp"){
+        }
+        else if(skill_code_2=="big_hp")
+        {
             skill_2_price.text =1000.ToString();
             skill_2.text="";
             skill_2.text="구급상자";
             skill_2.text+="";
             skill_img_2.sprite =big_hp;
-        }else if(skill_code_2=="slow"){
+        }
+        else if(skill_code_2=="slow")
+        {
             skill_2_price.text =3000.ToString();
             skill_2.text="";
             skill_2.text="다음판 스피드 다운";
             skill_img_2.sprite = slow;
             skill_2.text+="";
-        }else if(skill_code_2=="gold"){
+        }
+        else if(skill_code_2=="gold")
+        {
             skill_2_price.text =2500.ToString();
             skill_2.text="";
             skill_2.text="골드 상자 (500골드~10000골드)";
             skill_2.text+="";
             skill_img_2.sprite =gold;
-        }else if(skill_code_2=="respon"){
+        }
+        else if(skill_code_2=="respon")
+        {
             skill_2_price.text =4500.ToString();
             skill_2.text="";
             skill_2.text="반피로 부활 1회";
@@ -271,44 +313,56 @@ skill_img_1.sprite =respon;
             skill_img_2.sprite =respon;
         }
         
-        
-        if(skill_code_3=="at"){
+        if(skill_code_3=="at")
+        {
             skill_3_price.text =500.ToString();
             skill_3.text="";
             skill_3.text="공격력 증가 lv"+GameObject.Find("Canvas").GetComponent<GameManager>().at_lv+"->lv"+(GameObject.Find("Canvas").GetComponent<GameManager>().at_lv+1).ToString();
             skill_3.text+="";
             skill_img_3.sprite = at;
-        }else if(skill_code_3=="hp"){
+        }
+        else if(skill_code_3=="hp")
+        {
             skill_3_price.text =700.ToString();
             skill_3.text="";
             skill_3.text="최대 체력 증가+(전체 회복) lv"+GameObject.Find("Canvas").GetComponent<GameManager>().hp_lv+"->lv"+(GameObject.Find("Canvas").GetComponent<GameManager>().hp_lv+1).ToString();
             skill_3.text+="";
             skill_img_3.sprite = all_hp;
-        }else if(skill_code_3=="def"){
+        }
+        else if(skill_code_3=="def")
+        {
             skill_3_price.text =1200.ToString();
             skill_3.text="";
             skill_3.text="다음판 보호막 1회";
             skill_3.text+="";
             skill_img_3.sprite = def;
-        }else if(skill_code_3=="big_hp"){
+        }
+        else if(skill_code_3=="big_hp")
+        {
             skill_3_price.text =1000.ToString();
             skill_3.text="";
             skill_3.text="구급상자";
             skill_3.text+="";
             skill_img_3.sprite =big_hp;
-        }else if(skill_code_3=="slow"){
+        }
+        else if(skill_code_3=="slow")
+        {
             skill_3_price.text =3000.ToString();
             skill_3.text="";
             skill_3.text="다음판 스피드 다운";
             skill_img_3.sprite = slow;
             skill_3.text+="";
-        }else if(skill_code_3=="gold"){
+        }
+        else if(skill_code_3=="gold")
+        {
             skill_3_price.text =2500.ToString();
             skill_3.text="";
             skill_3.text="골드 상자 (500골드~10000골드)";
             skill_3.text+="";
             skill_img_3.sprite =gold;
-        }else if(skill_code_3=="respon"){
+        }
+        else if(skill_code_3=="respon")
+        {
             skill_3_price.text =4500.ToString();
             skill_3.text="";
             skill_3.text="반피로 부활 1회";
@@ -316,152 +370,176 @@ skill_img_1.sprite =respon;
             skill_img_3.sprite =respon;
         }
 
+        Time.timeScale = 0f;
+    }
 
+    private int at_udg = 500;
 
-}
+    public void skill_1_click()
+    {
+        if(skill_code_1=="at")
+        {
+            if (G < 500)
+            {
+             
+            }
+            else
+            {
+                G -= 500;
+                GameObject.Find("Canvas").GetComponent<GameManager>().at_lv++;
+                shop_pop.SetActive(false);
 
-private int at_udg = 500;
-public void skill_1_click(){
-     if(skill_code_1=="at"){
-         if (G < 500)
-         {
-             
-         }
-         else
-         {
-             G -= 500;
-             GameObject.Find("Canvas").GetComponent<GameManager>().at_lv++;
-             shop_pop.SetActive(false);
-             shop_exit();
-         }
+                Time.timeScale = 1f;
+                
+                shop_exit();
+            }
          
-        }else if(skill_code_1=="hp"){
-         
-         if (G < 700)
-         {
-             
-         }
-         else
-         {
-             G -= 700;
-             GameObject.Find("Canvas").GetComponent<GameManager>().hp_lv++;
-             shop_pop.SetActive(false);
-             shop_exit();
-         }
-         
-             
-          
-     }else if(skill_code_1=="def"){
-         if (G < 1200)
-         {
-             
-         }
-         else
-         {
-             G -= 1200;
-             shop_pop.SetActive(false);
-             shop_exit();
-             GameObject.Find("Canvas").GetComponent<GameManager>().bubble_lv=true;
-         }
-          
-        }else if(skill_code_1=="big_hp"){
-         if (G < 1000)
-         {
-             
-         }
-         else
-         {
-             G -= 1000;
-             GameObject.Find("User").GetComponent<user>().curhp=GameObject.Find("User").GetComponent<user>().maxhp;
-             shop_pop.SetActive(false);
-             shop_exit();
-             GameObject.Find("User").GetComponent<user>().barctrl();
-         }
-         
-        
-        }else if(skill_code_1=="slow"){
-         if (G < 3000)
-         {
-             
-         }
-         else
-         {
-             G -= 3000;
-             GameObject.Find("Canvas").GetComponent<GameManager>().slow_lv=true;
-             shop_pop.SetActive(false);
-             shop_exit();
-         }
-         
-             
-                      
-        }else if(skill_code_1=="gold"){
-         if (G < 2500)
-         {
-             
-         }
-         else
-         {
-             G -= 2500;
-             G+=Random.Range(500,10001);
-             G_text.text = G.ToString();
-             shop_pop.SetActive(false);
-             shop_exit();
-         }
-     
-        }else if(skill_code_1=="respon"){
-         
-         if (G < 4500)
-         {
-             
-         }
-         else
-         {
-             G -= 4500;
-           GameObject.Find("Canvas").GetComponent<GameManager>().respon_lv=true;
-           shop_pop.SetActive(false);
-           shop_exit();
-         }
-              
         }
-
-
-
-
-
-
-
-}
-public void skill_2_click(){
-     if(skill_code_2=="at"){
-         if (G < 500)
-         {
-             
-         }
-         else
-         {
-             G -= 500;
-             GameObject.Find("Canvas").GetComponent<GameManager>().at_lv++;
-             shop_pop.SetActive(false);
-             shop_exit();
-         }
+        else if(skill_code_1=="hp")
+        {
          
-        }else if(skill_code_2=="hp"){
-         
-         if (G < 700)
-         {
+            if (G < 700)
+            {
              
-         }
-         else
-         {
-             G -= 700;
-             GameObject.Find("Canvas").GetComponent<GameManager>().hp_lv++;
-             shop_pop.SetActive(false);
-             shop_exit();
-         }
-         
+            }
+            else
+            {
+                G -= 700;
+                GameObject.Find("Canvas").GetComponent<GameManager>().hp_lv++;
+                shop_pop.SetActive(false);
+
+                Time.timeScale = 1f;
+
+                shop_exit();
+            }
+        }
+        else if(skill_code_1=="def")
+        {
+            if (G < 1200)
+            {
              
-          
-     }else if(skill_code_2=="def"){
+            }
+            else
+            {
+                G -= 1200;
+                shop_pop.SetActive(false);
+                
+                Time.timeScale = 1f;
+
+                shop_exit();
+                GameObject.Find("Canvas").GetComponent<GameManager>().bubble_lv=true;
+            }
+        }
+        else if(skill_code_1=="big_hp")
+        {
+            if (G < 1000)
+            {
+             
+            }
+            else
+            {
+                G -= 1000;
+                GameObject.Find("User").GetComponent<user>().curhp=GameObject.Find("User").GetComponent<user>().maxhp;
+                shop_pop.SetActive(false);
+
+                Time.timeScale = 1f;
+
+                shop_exit();
+                GameObject.Find("User").GetComponent<user>().barctrl();
+            }
+        }
+        else if(skill_code_1=="slow")
+        {
+            if (G < 3000)
+            {
+             
+            }
+            else
+            {
+                G -= 3000;
+                GameObject.Find("Canvas").GetComponent<GameManager>().slow_lv=true;
+                shop_pop.SetActive(false);
+
+                Time.timeScale = 1f;
+
+                shop_exit();
+            }            
+        }
+        else if(skill_code_1=="gold")
+        {
+            if (G < 2500)
+            {
+             
+            }
+            else
+            {
+                G -= 2500;
+                G+=Random.Range(500,10001);
+                G_text.text = G.ToString();
+                shop_pop.SetActive(false);
+
+                Time.timeScale = 1f;
+
+                shop_exit();
+            }
+        }
+        else if(skill_code_1=="respon")
+        {
+            if (G < 4500)
+            {
+             
+            }
+            else
+            {
+                G -= 4500;
+                GameObject.Find("Canvas").GetComponent<GameManager>().respon_lv=true;
+                shop_pop.SetActive(false);
+
+                Time.timeScale = 1f;
+
+                shop_exit();
+            }
+        }
+    }
+
+    public void skill_2_click()
+    {
+        if(skill_code_2=="at")
+        {
+            if (G < 500)
+            {
+             
+            }
+            else
+            {
+                G -= 500;
+                GameObject.Find("Canvas").GetComponent<GameManager>().at_lv++;
+                shop_pop.SetActive(false);
+
+                Time.timeScale = 1f;
+
+                shop_exit();
+            }
+        }
+        else if(skill_code_2=="hp")
+        {
+            if (G < 700)
+            {
+             
+            }
+            else
+            {
+                G -= 700;
+                GameObject.Find("Canvas").GetComponent<GameManager>().hp_lv++;
+                shop_pop.SetActive(false);
+
+                Time.timeScale = 1f;
+
+                shop_exit();
+            }
+        }
+        else if(skill_code_2=="def")
+        {
          if (G < 1200)
          {
              
@@ -470,7 +548,10 @@ public void skill_2_click(){
          {
              G -= 1200;
              shop_pop.SetActive(false);
-             shop_exit();
+
+                Time.timeScale = 1f;
+
+                shop_exit();
              GameObject.Find("Canvas").GetComponent<GameManager>().bubble_lv=true;
          }
           
@@ -486,7 +567,10 @@ public void skill_2_click(){
              
              GameObject.Find("User").GetComponent<user>().barctrl();
              shop_pop.SetActive(false);
-             shop_exit();
+
+                Time.timeScale = 1f;
+
+                shop_exit();
          }
          
         
@@ -500,7 +584,10 @@ public void skill_2_click(){
              G -= 3000;
              GameObject.Find("Canvas").GetComponent<GameManager>().slow_lv=true;
              shop_pop.SetActive(false);
-             shop_exit();
+
+                Time.timeScale = 1f;
+
+                shop_exit();
          }
          
              
@@ -516,36 +603,31 @@ public void skill_2_click(){
              G+=Random.Range(500,10001);
              G_text.text = G.ToString();
              shop_pop.SetActive(false);
-             shop_exit();
+
+                Time.timeScale = 1f;
+
+                shop_exit();
          }
      
-        }else if(skill_code_2=="respon"){
-         
-         if (G < 4500)
-         {
-             
-         }
-         else
-         {
-             G -= 4500;
-           GameObject.Find("Canvas").GetComponent<GameManager>().respon_lv=true;
-           shop_pop.SetActive(false);
-           shop_exit();
-         }
-              
         }
+        else if(skill_code_2=="respon")
+        { 
+            if (G < 4500)
+            {
+                
+            }
+            else
+            {
+                G -= 4500;
+                GameObject.Find("Canvas").GetComponent<GameManager>().respon_lv=true;
+                shop_pop.SetActive(false);
 
+                Time.timeScale = 1f;
 
-
-
-
-
-
-}
-
-
-
-
+                shop_exit();
+            }
+        }
+    }
 
 public void skill_3_click(){
      if(skill_code_3=="at"){
@@ -558,7 +640,10 @@ public void skill_3_click(){
              G -= 500;
              GameObject.Find("Canvas").GetComponent<GameManager>().at_lv++;
              shop_pop.SetActive(false);
-             shop_exit();
+
+                Time.timeScale = 1f;
+
+                shop_exit();
          }
          
         }else if(skill_code_3=="hp"){
@@ -572,7 +657,10 @@ public void skill_3_click(){
              G -= 700;
              GameObject.Find("Canvas").GetComponent<GameManager>().hp_lv++;
              shop_pop.SetActive(false);
-             shop_exit();
+
+                Time.timeScale = 1f;
+
+                shop_exit();
          }
          
              
@@ -587,7 +675,10 @@ public void skill_3_click(){
              G -= 1200;
              GameObject.Find("Canvas").GetComponent<GameManager>().bubble_lv=true;
              shop_pop.SetActive(false);
-             shop_exit();
+
+                Time.timeScale = 1f;
+
+                shop_exit();
          }
           
         }else if(skill_code_3=="big_hp"){
@@ -601,7 +692,10 @@ public void skill_3_click(){
              GameObject.Find("User").GetComponent<user>().curhp=GameObject.Find("User").GetComponent<user>().maxhp;
              GameObject.Find("User").GetComponent<user>().barctrl();
              shop_pop.SetActive(false);
-             shop_exit();
+
+                Time.timeScale = 1f;
+
+                shop_exit();
          }
          
         
@@ -615,7 +709,10 @@ public void skill_3_click(){
              G -= 3000;
              GameObject.Find("Canvas").GetComponent<GameManager>().slow_lv=true;
              shop_pop.SetActive(false);
-             shop_exit();
+
+                Time.timeScale = 1f;
+
+                shop_exit();
          }
          
              
@@ -631,7 +728,10 @@ public void skill_3_click(){
              G+=Random.Range(500,10001);
              G_text.text = G.ToString();
              shop_pop.SetActive(false);
-             shop_exit();
+
+                Time.timeScale = 1f;
+
+                shop_exit();
          }
      
         }else if(skill_code_3=="respon"){
@@ -645,19 +745,14 @@ public void skill_3_click(){
              G -= 4500;
            GameObject.Find("Canvas").GetComponent<GameManager>().respon_lv=true;
            shop_pop.SetActive(false);
-           shop_exit();
+
+                Time.timeScale = 1f;
+
+                shop_exit();
          }
               
         }
-
-
-
-
-
-
-
-}
-
+    }
 
     void Update()
     {
@@ -670,19 +765,6 @@ public void skill_3_click(){
         {
             bubble_obj.SetActive(false);
         }
-    // if((currentscore+1)%10 == 0)
-    // {
-    //      com_img.localScale=new Vector3(12f, 12f, 0.0f);
-
-    //      com_hpbar.localScale=new Vector3(1.4f, 1.4f, 0.0f);
-
-    //  }
-    // else
-    // {
-    // com_img.localScale=new Vector3(8f, 8f, 0.0f);
-
-    // com_hpbar.localScale=new Vector3(1f, 1f, 0.0f);
-    //  }
 
     my_at = 20;
         for (int i = 1; i <= GameObject.Find("Canvas").GetComponent<GameManager>().at_lv;i++)

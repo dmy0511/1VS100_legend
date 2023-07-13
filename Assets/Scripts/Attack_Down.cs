@@ -58,16 +58,6 @@ void OnTriggerExit2D(Collider2D other)
     {
       
         isInsideBox=false;
-      
-    //  if(other.gameObject.name=="perfect_col"){
-            
-    //     }else if(other.gameObject.name=="good_col_back"){
-
-    //     }else if(other.gameObject.name=="ok_col_back"){
-
-    //     }else if(other.gameObject.name=="fail_col_back"){
-
-    //     }
 }
 
 
@@ -107,9 +97,7 @@ void OnTriggerExit2D(Collider2D other)
            
             
         }else if(isInsideBox==true && (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.UpArrow))){
-            // do{
-
-            // }while(Input.GetKeyDown(KeyCode.DownArrow)==false||isInsideBox==true)
+            
             Destroy(gameObject);
         }
     }
