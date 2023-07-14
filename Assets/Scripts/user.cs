@@ -62,6 +62,22 @@ public class user : MonoBehaviour
                 comScript.ResetHealth(); // com 스크립트의 체력 초기화
                 comScript.showQuestionMark = false; // com 스크립트에서 물음표 표시를 비활성화
                 comScript.UpdateScoreText(); // com 스크립트의 점수 텍스트 업데이트
+                if (GameObject.Find("Com").GetComponent<com>().currentscore > PlayerPrefs.GetInt(comScript.scoretext.text))
+                {
+                    PlayerPrefs.SetInt("score", GameObject.Find("Com").GetComponent<com>().currentscore);
+                }
+                else
+                {
+                    
+                }
+
+                GameObject.Find("hscore").GetComponent<Text>().text =
+                    "현재 점수 : " + comScript.scoretext.text;
+
+                GameObject.Find("bscore").GetComponent<Text>().text =
+                    "최고 점수 : " + comScript.scoretext.text;
+                
+              
 
                 Time.timeScale = 0f;
 

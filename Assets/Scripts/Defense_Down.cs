@@ -106,5 +106,6 @@ void OnTriggerExit2D(Collider2D other)
                userScript.DefenseFail(20f);
             Destroy(gameObject);
         }
+           
     }
 }

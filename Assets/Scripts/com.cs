@@ -71,6 +71,8 @@ public class com : MonoBehaviour
 
     public Sprite def;
 
+    public AudioClip audiotang;
+    
     private void Awake()
     {
       
@@ -179,6 +181,7 @@ public class com : MonoBehaviour
 
     public void shop_exit()
     {
+        Time.timeScale = 1f;
         shop_music.Stop();
         zun_music.Play();
         GameObject.Find("Canvas").GetComponent<GameManager>().key_move_bool = true;
@@ -778,6 +781,8 @@ public void skill_3_click(){
             ResetHealth(); // 체력 초기화
             showQuestionMark = false; // 물음표 표시를 비활성화
             currentscore++; // 점수 증가
+            audioSource.clip = audioClip_die;
+            audioSource.Play();
             if(currentscore%5==0)
             {
             shop_pop.SetActive(true);
@@ -818,7 +823,7 @@ public void skill_3_click(){
     }
 
 
-    public AudioClip audiotang;
+  
     public void Defense(float amount)
     {
         audioSource.clip=audiotang;
